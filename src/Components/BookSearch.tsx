@@ -1,11 +1,11 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useMemo, useCallback } from "react";
 import { ServerKeyContext } from "../main.tsx";
 import { decryptData } from "../utils/utils.ts";
 import { useBooksClient } from "../api/BooksClient.ts";
 import { IBook } from "../types/types.ts";
 
 function BookSearch() {
-  const booksClient = useBooksClient();
+  const { searchBooks } = useBooksClient();
   const [search, setSearch] = useState("");
   const [books, setBooks] = useState<Array<IBook> | []>([]);
   const [loading, setLoading] = useState(false);
@@ -23,7 +23,7 @@ function BookSearch() {
       setError("");
 
       try {
-        const data = await booksClient.searchBooks(search);
+        const data = await searchBooks(search);
         if (data && data.error) {
           setError("Failed to fetch books.");
           setLoading(false);
@@ -50,7 +50,7 @@ function BookSearch() {
     setLoading(true);
     const timeoutId = setTimeout(fetchBooks, 500);
     return () => clearTimeout(timeoutId);
-  }, [search, privateKey]);
+  }, [search, privateKey, searchBooks]);
 
   return (
     <>

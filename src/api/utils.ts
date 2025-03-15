@@ -35,7 +35,6 @@ export const createApiFetch =
     if (method !== "GET" && method !== "HEAD") {
       options.body = JSON.stringify({
         encrypted: body,
-        // clientPublicKey: publicClientKey,
       });
     }
 
