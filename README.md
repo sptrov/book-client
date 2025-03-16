@@ -55,9 +55,9 @@ The build output will be in the `dist` directory.
 
 ## Key Features
 
-- **Book Search**: Search for books using the `BookSearch` component.
-- **Add Book**: Add new books using the `BookForm` component.
-- **Encryption/Decryption**: Secure data transmission using RSA and AES algorithms.
+- **Book Search**: Search for books using the `BookSearch` component.Data is encrypted on the server and here on the client an encrypted array json is received and being decrypted with RSA + AES to be able to visualize
+- **Add Book**: Add new books using the `BookForm` component.Before sending the book data is encrypted with the server public key and since the data is not too big only RSA encryption is used
+- **Encryption/Decryption**: when starting the React app a private and public keys are generated and passed down through Context api and also a request for the server public key is done and also provided through the context api.
 
 ## Environment Variables
 
