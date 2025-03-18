@@ -74,8 +74,10 @@ function BookForm({ onClose }: BookFormProps) {
         />
         <div className="button-container">
           {" "}
-          <button type="submit">Add Book</button>
-          <button onClick={onClose} type="submit">
+          <button className="add-form-button" type="submit">
+            Add Book
+          </button>
+          <button className="add-form-button" onClick={onClose} type="submit">
             Cancel
           </button>
         </div>

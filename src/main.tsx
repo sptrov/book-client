@@ -1,6 +1,6 @@
 import { StrictMode, createContext, useState, useEffect } from "react";
 import { createRoot } from "react-dom/client";
-import "./index.css";
+import "./index.scss";
 import App from "./App.tsx";
 import { useKeyClient } from "./api/KeyClient.ts";
 
@@ -28,7 +28,6 @@ const ServerKeyProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const fetchServerKey = async () => {
       try {
         const response = await client.getServerKey();
-        console.log("Fetched server key:", response.key);
         setServerKey(response.key);
       } catch (error) {
         console.error("Failed to fetch server key:", error);

@@ -1,8 +1,9 @@
-import { useState, useEffect, useContext, useMemo, useCallback } from "react";
+import { useState, useEffect, useContext } from "react";
 import { ServerKeyContext } from "../main.tsx";
 import { decryptData } from "../utils/utils.ts";
 import { useBooksClient } from "../api/BooksClient.ts";
 import { IBook } from "../types/types.ts";
+import BookList from "./BookList.tsx";
 
 function BookSearch() {
   const { searchBooks } = useBooksClient();
@@ -46,7 +47,7 @@ function BookSearch() {
       setLoading(false);
     };
 
-    // Add delay before making request to reduce API calls (Debounce effect)
+    // Add delay before making request to reduce API calls (Debounce effect) usually would use a loadash debounce function
     setLoading(true);
     const timeoutId = setTimeout(fetchBooks, 500);
     return () => clearTimeout(timeoutId);
@@ -55,7 +56,7 @@ function BookSearch() {
   return (
     <>
       <div className="container">
-        <h2>Search Books</h2>
+        <h1>Search Books</h1>
 
         <input
           type="text"
@@ -66,17 +67,9 @@ function BookSearch() {
         />
 
         {loading && <p>Loading...</p>}
-        {error && <p className="error">{error}</p>}
+        {error && !loading && <p className="error">{error}</p>}
 
-        <ul className="book-list">
-          {books.length === 0 && !loading && search && <p>No results found.</p>}
-          {books.map((book) => (
-            <li key={book._id}>
-              <strong>{book.title}</strong> by {book.author} (
-              {new Date(book.publicationDate).toDateString()})
-            </li>
-          ))}
-        </ul>
+        <BookList books={books} />
       </div>
     </>
   );
