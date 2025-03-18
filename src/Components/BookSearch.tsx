@@ -26,7 +26,7 @@ function BookSearch() {
       try {
         const data = await searchBooks(search);
         if (data && data.error) {
-          setError("Failed to fetch books.");
+          setError(data.error);
           setLoading(false);
           setBooks([]);
           return;
