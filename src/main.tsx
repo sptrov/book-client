@@ -1,4 +1,10 @@
-import { StrictMode, createContext, useState, useEffect } from "react";
+import {
+  StrictMode,
+  createContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 import { createRoot } from "react-dom/client";
 import "./index.scss";
 import App from "./App.tsx";
@@ -6,14 +12,13 @@ import { useKeyClient } from "./api/KeyClient.ts";
 
 // Create a context for the server key
 const ServerKeyContext = createContext<{
-  publicKey?: string | undefined;
-  privateKey?: string | undefined;
+  publicKey?: string;
+  privateKey?: string;
   serverKey: string;
 }>({
   serverKey: "",
 });
 
-import { ReactNode } from "react";
 import { generateKeyPairs } from "./utils/utils.ts";
 
 const ServerKeyProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -22,12 +27,12 @@ const ServerKeyProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     publicKey: string;
     privateKey: string;
   }>();
-  const client = useKeyClient();
+  const { getServerKey } = useKeyClient();
 
   useEffect(() => {
     const fetchServerKey = async () => {
       try {
-        const response = await client.getServerKey();
+        const response = await getServerKey();
         setServerKey(response.key);
       } catch (error) {
         console.error("Failed to fetch server key:", error);
@@ -41,7 +46,7 @@ const ServerKeyProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
     fetchServerKey();
     generateClientKeys();
-  }, []);
+  }, [getServerKey]);
 
   return (
     <ServerKeyContext.Provider value={{ serverKey, ...clientKeyPair }}>

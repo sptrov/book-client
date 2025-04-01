@@ -1,3 +1,4 @@
+import { useCallback, useMemo } from "react";
 import { createApiFetch } from "../api/utils";
 
 interface UseKeyClient {
@@ -5,12 +6,12 @@ interface UseKeyClient {
 }
 
 export const useKeyClient = (): UseKeyClient => {
-  const fetch = createApiFetch();
+  const fetch = useMemo(() => createApiFetch(), []);
 
-  const getServerKey = async (): Promise<{ key: string }> => {
+  const getServerKey = useCallback(async (): Promise<{ key: string }> => {
     const response = await fetch("publicKey", "GET");
     return response as { key: string };
-  };
+  }, [fetch]);
 
   return { getServerKey };
 };

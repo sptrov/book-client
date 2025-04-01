@@ -49,7 +49,7 @@ export async function decryptData(
       ["decrypt"]
     );
 
-    //NEW CODE for encrypt large data
+    // decrypt the AES key using the private key
     if (encryptedKey) {
       const authTag = Uint8Array.from(atob(authTagBase64 ?? ""), (c) =>
         c.charCodeAt(0)
@@ -98,26 +98,8 @@ export async function decryptData(
 
       return JSON.parse(decryptedText);
     }
-
-    // // ✅ Convert Base64 string to ArrayBuffer
-    // const encryptedBuffer = Uint8Array.from(atob(encryptedBase64Data), (c) =>
-    //   c.charCodeAt(0)
-    // ).buffer;
-
-    // // ✅ Decrypt the data using the client's private key
-    // const decryptedBuffer = await window.crypto.subtle.decrypt(
-    //   { name: "RSA-OAEP" },
-    //   clientPrivateKey, // Client's private key
-    //   encryptedBuffer
-    // );
-
-    // // ✅ Convert decrypted ArrayBuffer back to a UTF-8 string
-    // const decryptedText = new TextDecoder().decode(decryptedBuffer);
-
-    // // ✅ Parse JSON data
-    // return JSON.parse(decryptedText);
   } catch (error) {
-    console.error("❌ Decryption Error:", error);
+    console.error("Decryption Error:", error);
     throw new Error("Failed to decrypt data.");
   }
 }
